@@ -42,10 +42,10 @@ const TabBar = ({ state, descriptors, navigation }) => {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1 }}
+            style={styles.button}
             key={options.tabBarTestID}
           >
-            <Text style={[styles.tabIcon, { color: isFocused ? '#673ab7' : '#222' }]}>
+            <Text style={[styles.tabIcon, { color: isFocused ? '#673ab7' : '#fff' }]}>
               {label}
             </Text>
           </TouchableOpacity>
@@ -58,10 +58,15 @@ const TabBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
-    paddingVertical: 20
+    borderTopColor: '#aaa',
+    borderTopWidth: 1
   },
   tabIcon: {
-    textAlign: 'center'
+    textAlign: 'center',
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 15
   }
 });
 
