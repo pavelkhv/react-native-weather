@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+
+import tabIcons from '../../assets/js/tabIcons';
 
 const TabBar = ({ state, descriptors, navigation }) => {
   return (
@@ -45,9 +47,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
             style={styles.button}
             key={options.tabBarTestID}
           >
-            <Text style={[styles.tabIcon, { color: isFocused ? '#673ab7' : '#fff' }]}>
-              {label}
-            </Text>
+            <Image source={isFocused ? tabIcons[`${label}-active`] : tabIcons[label]} style={{width: 32, height: 32}} />
           </TouchableOpacity>
         );
       })}
@@ -58,15 +58,17 @@ const TabBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
-    borderTopColor: '#aaa',
-    borderTopWidth: 1
+    alignItems: 'center',
+    borderTopColor: '#43676A',
+    borderTopWidth: 1,
   },
   tabIcon: {
     textAlign: 'center',
   },
   button: {
     flex: 1,
-    paddingVertical: 15
+    paddingVertical: 15,
+    alignItems: 'center'
   }
 });
 

@@ -6,6 +6,9 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Provider } from 'react-redux';
 
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
 import Main from './screens/Main';
 import History from './screens/History';
 import TabBar from './components/TabBar/TabBar';
@@ -22,6 +25,30 @@ const MyTheme = {
   },
 };
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDu7RM1D2Oeftm2j8N-YIvgdk2HpdxMe1k",
+  authDomain: "react-native-weather-c963a.firebaseapp.com",
+  databaseURL: "https://react-native-weather-c963a.firebaseio.com",
+  projectId: "react-native-weather-c963a",
+  storageBucket: "react-native-weather-c963a.appspot.com",
+  messagingSenderId: "149007658554",
+  appId: "1:149007658554:web:1a37af9da29e7e44b2cf03",
+  measurementId: "G-J0GLJ2PC1Y"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+  } else {
+    // No user is signed in.
+    firebase.auth().signInAnonymously().catch(err => {})
+  }
+});
+
 StatusBar.setBarStyle('light-content', true);
 
 export default function App() {
@@ -31,8 +58,8 @@ export default function App() {
         <SafeAreaView style={styles.container}>
           <NavigationContainer theme={MyTheme}>
             <Tab.Navigator tabBar={props => <TabBar {...props} />}>
-              <Tab.Screen name="Home" component={Main} />
-              <Tab.Screen name="History" component={History} />
+              <Tab.Screen name="home" component={Main} />
+              <Tab.Screen name="history" component={History} />
             </Tab.Navigator>
           </NavigationContainer>
         </SafeAreaView>

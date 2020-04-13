@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import { connect } from "react-redux";
 import { getWeatherAction } from "../actions/index";
 
+import Preloader from '../components/Preloader/Preloader';
+
 import icons from "../assets/js/weatherIcons";
 
 const getTime = (date) => {
@@ -65,7 +67,7 @@ const Main = (props) => {
       
     </View>
   ) : (
-    <Text>{errorMessage}</Text>
+    <Preloader />
   );
 };
 
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     paddingHorizontal: 15,
-    paddingVertical: 50,
+    paddingVertical: 15,
   },
   city: {
     color: '#43676A',
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 50
   },
   description: {
-    color: '#aaa',
+    color: '#ccc',
     fontSize: 36
   },
   footer: {
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   sunsetText: {
     fontSize: 24,
     textTransform: 'uppercase',
-    color: '#aaa',
+    color: '#bbb',
     marginLeft: 10
   },
   sunrise: {
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
   sunriseText: {
     fontSize: 24,
     textTransform: 'uppercase',
-    color: '#aaa',
+    color: '#bbb',
     marginLeft: 10
   }
 });

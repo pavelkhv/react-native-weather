@@ -1,6 +1,37 @@
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
+const getTime = (date) => {
+  let dd = date.getDate();
+  dd = (dd < 10) ? `0${dd}` : dd;
+
+  let mm = date.getMonth() + 1;
+  mm = (mm < 10) ? `0${mm}` : mm;
+
+  let yy = date.getFullYear() % 100;
+  yy = (yy < 10) ? `0${yy}` : yy;
+
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = (hours >= 12) ? 'PM' : 'AM';
+
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = (minutes < 10) ? `0${minutes}` : minutes;
+
+  let strTime = `${dd}.${mm}.${yy} ${hours}:${minutes} ${ampm}`;
+
+  return strTime;
+}
+
+export const getHistory = history => ({
+  type: "GET_HISTORY",
+  history
+});
+
 export const getWeatherAction = () => {
   return async dispatch => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -15,6 +46,15 @@ export const getWeatherAction = () => {
       .then(response => response.json())
       .then(data => {
         dispatch(getWeatherSuccess(data, geocode, { latitude , longitude }));
+
+        const uid = firebase.auth().currentUser.uid;
+
+        firebase.firestore().collection("History").doc(uid).collection("list").add({
+          data: data,
+          geocode: geocode,
+          location: {latitude, longitude},
+          created: getTime(new Date())
+        })
       });
   }
 }
