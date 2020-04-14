@@ -1,14 +1,14 @@
 const initialState = {
-  historyList: []
+  historyList: [],
 };
 
-const reducerHistory = (state=initialState, {type, history}) => {
-  switch(type) {
-    case "GET_HISTORY": 
+const reducerHistory = (state = initialState, { type, history }) => {
+  switch (type) {
+    case "GET_HISTORY":
       return history;
     default:
       return state;
   }
-}
+};
 
 export default reducerHistory;

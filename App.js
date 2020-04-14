@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import React from "react";
+import { StyleSheet, StatusBar } from "react-native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
-import { Provider } from 'react-redux';
+import { Provider } from "react-redux";
 
-import * as firebase from 'firebase';
-import 'firebase/firestore';
+import * as firebase from "firebase";
+import "firebase/firestore";
 
-import Main from './screens/Main';
-import History from './screens/History';
-import TabBar from './components/TabBar/TabBar';
+import Main from "./screens/Main";
+import History from "./screens/History";
+import HistoryDetails from "./screens/HistoryDetails";
+import TabBar from "./components/TabBar/TabBar";
 
-import store from './store';
+import store from "./store";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +23,7 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'transparent',
+    background: "transparent",
   },
 };
 
@@ -33,23 +35,43 @@ const firebaseConfig = {
   storageBucket: "react-native-weather-c963a.appspot.com",
   messagingSenderId: "149007658554",
   appId: "1:149007658554:web:1a37af9da29e7e44b2cf03",
-  measurementId: "G-J0GLJ2PC1Y"
+  measurementId: "G-J0GLJ2PC1Y",
 };
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     // User is signed in.
   } else {
     // No user is signed in.
-    firebase.auth().signInAnonymously().catch(err => {})
+    firebase
+      .auth()
+      .signInAnonymously()
+      .catch((err) => {});
   }
 });
 
-StatusBar.setBarStyle('light-content', true);
+StatusBar.setBarStyle("light-content", true);
+
+const HistoryStack = createStackNavigator();
+
+const HistoryStackScreen = () => (
+  <HistoryStack.Navigator>
+    <HistoryStack.Screen
+      name="history"
+      component={History}
+      options={{ headerShown: false }}
+    />
+    <HistoryStack.Screen
+      name="details"
+      component={HistoryDetails}
+      options={{ headerShown: false }}
+    />
+  </HistoryStack.Navigator>
+);
 
 export default function App() {
   return (
@@ -57,9 +79,9 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
           <NavigationContainer theme={MyTheme}>
-            <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+            <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
               <Tab.Screen name="home" component={Main} />
-              <Tab.Screen name="history" component={History} />
+              <Tab.Screen name="history" component={HistoryStackScreen} />
             </Tab.Navigator>
           </NavigationContainer>
         </SafeAreaView>
@@ -71,6 +93,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#282c2f'
+    backgroundColor: "#282c2f",
   },
 });

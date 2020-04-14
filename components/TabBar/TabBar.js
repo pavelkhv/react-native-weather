@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
-import tabIcons from '../../assets/js/tabIcons';
+import tabIcons from "../../assets/js/tabIcons";
 
 const TabBar = ({ state, descriptors, navigation }) => {
   return (
@@ -19,7 +19,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
         const onPress = () => {
           const event = navigation.emit({
-            type: 'tabPress',
+            type: "tabPress",
             target: route.key,
             canPreventDefault: true,
           });
@@ -31,7 +31,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
         const onLongPress = () => {
           navigation.emit({
-            type: 'tabLongPress',
+            type: "tabLongPress",
             target: route.key,
           });
         };
@@ -39,38 +39,40 @@ const TabBar = ({ state, descriptors, navigation }) => {
         return (
           <TouchableOpacity
             accessibilityRole="button"
-            accessibilityStates={isFocused ? ['selected'] : []}
+            accessibilityStates={isFocused ? ["selected"] : []}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
             style={styles.button}
-            key={options.tabBarTestID}
+            key={label}
           >
-            <Image source={isFocused ? tabIcons[`${label}-active`] : tabIcons[label]} style={{width: 32, height: 32}} />
+            <Image
+              source={isFocused ? tabIcons[`${label}-active`] : tabIcons[label]}
+              style={{ width: 32, height: 32 }}
+            />
           </TouchableOpacity>
         );
       })}
     </View>
   );
-}
+};
+
+export default TabBar;
 
 const styles = StyleSheet.create({
   tabBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderTopColor: '#43676A',
+    flexDirection: "row",
+    alignItems: "center",
+    borderTopColor: "#43676A",
     borderTopWidth: 1,
   },
   tabIcon: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   button: {
     flex: 1,
     paddingVertical: 15,
-    alignItems: 'center'
-  }
+    alignItems: "center",
+  },
 });
-
-export default TabBar;
-
